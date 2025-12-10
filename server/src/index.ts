@@ -24,6 +24,11 @@ app.get('/health', (req: Request, res: Response) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Root Route (Welcome Message)
+app.get('/', (req: Request, res: Response) => {
+    res.send('UBIMED CVDR Calculator API is running successfully. 🚀');
+});
+
 
 
 import calculationRoutes from './routes/calculation.routes';
