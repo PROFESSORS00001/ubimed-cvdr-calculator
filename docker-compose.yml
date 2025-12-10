@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DATABASE_URL=postgres://user:password@db:5432/ubimed_cvdr
+      - ALLOWED_ORIGINS=http://localhost:5173
+    depends_on:
+      - db
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    networks:
+      - ubimed-network
+
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:3000/api
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    networks:
+      - ubimed-network
+
+  db:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=ubimed_cvdr
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ubimed-network
+
+networks:
+  ubimed-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
