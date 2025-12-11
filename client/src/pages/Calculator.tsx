@@ -73,7 +73,7 @@ const Calculator = () => {
                 status
             };
 
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+            const apiUrl = import.meta.env.VITE_API_URL || 'https://ubimed-cvdr-calculator.onrender.com/api';
             const response = await axios.post(`${apiUrl}/calculation`, payload);
 
             if (response.data && response.data.id) {
