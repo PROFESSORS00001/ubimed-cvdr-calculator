@@ -15,8 +15,10 @@ app.use(cors({
 app.use(express.json());
 
 // Database Pool
+const isProduction = process.env.NODE_ENV === 'production';
 export const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
+    ssl: isProduction ? { rejectUnauthorized: false } : undefined
 });
 
 // Health Check
